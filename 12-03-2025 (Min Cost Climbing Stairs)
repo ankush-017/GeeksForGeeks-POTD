@@ -1,0 +1,21 @@
+class Solution {
+  public:
+  
+  int solve(int n,vector<int>& cost,vector<int>&dp){
+      
+      if(n<0) return 0;
+      if(dp[n]!=-1) return dp[n];
+      int one = (n-1>=0?cost[n-1]:0) + solve(n-1,cost,dp);
+      int two = (n-2>=0?cost[n-2]:0) + solve(n-2,cost,dp);
+      
+      return dp[n] = min(one,two);
+  }
+  
+    int minCostClimbingStairs(vector<int>& cost) {
+        
+        int n = cost.size();
+        vector<int>dp(n+1,-1);
+        
+        return solve(n,cost,dp);
+    }
+};
