@@ -1,0 +1,45 @@
+class Solution {
+  public:
+  //(Top-down Approach)
+  int solve(int W, vector<int> &val, vector<int> &wt,int idx,vector<vector<int>>&dp){
+      
+      int n = val.size();
+      if(idx == n) return 0;
+      if(dp[idx][W]!=-1) return dp[idx][W];
+      int inc = 0;
+      if(W>=wt[idx])
+      inc = val[idx] + solve(W-wt[idx],val,wt,idx+1,dp);
+      int exc = 0 + solve(W,val,wt,idx+1,dp);
+      
+      return dp[idx][W] = max(inc,exc);
+  }
+  // (Bottom-Up Approach) Tabulation
+   int SolveTab(int W, vector<int> &val, vector<int> &wt) {
+       
+        int n = wt.size();
+        vector<int>curr(W + 1, 0);
+        vector<int>next(W + 1, 0);
+        for (int idx = n - 1; idx >= 0; idx--) {
+            for (int w = 0; w <= W; w++) {
+                int inc = 0;
+                if (w >= wt[idx]) 
+                    inc = val[idx] + next[w - wt[idx]];
+                
+                int exc = next[w];
+                
+                curr[w] = max(inc, exc);
+            }
+            next = curr;
+        }
+        
+        return curr[W];
+    }
+    int knapsack(int W, vector<int> &val, vector<int> &wt) {
+       
+        int n = wt.size();
+        vector<vector<int>>dp(n+1,vector<int>(W+1,-1));
+        
+        // return solve(W,val,wt,0,dp);
+        return SolveTab(W,val,wt);
+    }
+};
