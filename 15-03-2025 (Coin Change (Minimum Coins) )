@@ -1,0 +1,23 @@
+class Solution {
+  public:
+  
+  int solve(vector<int> &coins, int sum,int idx,vector<vector<int>>&dp){
+      
+      if(sum<0 || idx == coins.size()) return INT_MAX;
+      if(sum==0) return 0;
+      if(dp[idx][sum]!=-1) return dp[idx][sum];
+    //   int mini = INT_MAX
+      int inc = solve(coins,sum-coins[idx],idx,dp);
+      if(inc != INT_MAX) inc += 1;
+      int exc = 0 + solve(coins,sum,idx+1,dp);
+      
+      return dp[idx][sum] = min(inc,exc);
+  }
+    int minCoins(vector<int> &coins, int sum) {
+        
+        int n = coins.size();
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        
+        return solve(coins,sum,0,dp)==INT_MAX?-1:solve(coins,sum,0,dp);
+    }
+};
