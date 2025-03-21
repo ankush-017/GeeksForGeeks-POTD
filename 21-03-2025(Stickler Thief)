@@ -1,0 +1,21 @@
+class Solution {
+  public: 
+  int solve(vector<int>& arr,int idx,vector<int>&dp){
+      
+        if(idx >= arr.size()) return 0;
+        if(dp[idx]!=-1) return dp[idx];
+        // int maxi = 0;
+        int inc = arr[idx] + solve(arr,idx+2,dp);
+        int exc = 0 + solve(arr,idx+1,dp);
+        
+      return dp[idx] = max(inc,exc);
+  }
+  
+    int findMaxSum(vector<int>& arr) {
+        
+        int n = arr.size();
+        vector<int>dp(n+1,-1);
+        
+        return solve(arr,0,dp);
+    }
+};
