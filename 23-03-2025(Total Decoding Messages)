@@ -1,0 +1,25 @@
+class Solution {
+  public:
+  
+  int solve(string &digits,int n,int idx,vector<int>&dp){
+      
+      if(idx>=n) return 1;
+      if(digits[idx] == '0') return 0;
+      if(dp[idx]!=-1) return dp[idx];
+      int take2 = 0;
+      int take1 = solve(digits,n,idx+1,dp);
+      if(idx+1<n && stoi(digits.substr(idx,2))<=26){
+          take2 = solve(digits,n,idx+2,dp);
+      }
+      
+      return dp[idx] = take1+take2;
+  }
+  
+    int countWays(string &digits) {
+        
+        int n = digits.size();
+        vector<int>dp(n+1,-1);
+        
+        return solve(digits,n,0,dp);
+    }
+};
