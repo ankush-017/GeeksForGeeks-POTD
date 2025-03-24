@@ -1,0 +1,39 @@
+class Solution {
+  public:
+  
+    int solve(vector<int>& arr,int idx,vector<int>&dp){
+      
+        if(idx >= arr.size()) return 0;
+        if(dp[idx]!=-1) return dp[idx];
+        // int maxi = 0;
+        int inc = arr[idx] + solve(arr,idx+2,dp);
+        int exc = 0 + solve(arr,idx+1,dp);
+        
+      return dp[idx] = max(inc,exc);
+  }
+  
+    int maxValue(vector<int>& arr) {
+        
+        int n = arr.size();
+        vector<int>A,B;
+        for(int i=0;i<n;i++){
+            if(i==0){
+                A.push_back(arr[i]);
+                continue;
+            }
+            if(i==n-1){
+                B.push_back(arr[i]);
+                continue;
+            }
+            else{
+                A.push_back(arr[i]);
+                B.push_back(arr[i]);
+            }
+        }
+        vector<int>dp1(n+1,-1);
+        vector<int>dp2(n+1,-1);
+
+        return max(solve(A,0,dp1),solve(B,0,dp2));
+        
+    }
+};
