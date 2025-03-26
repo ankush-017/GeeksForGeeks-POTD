@@ -1,0 +1,53 @@
+class Solution {
+  public:
+  
+  int solve(string &s,int i,int j,bool isTrue,vector<vector<vector<int>>>&dp){
+      
+      if(i>j) return 0;
+      int ways = 0;
+      if(dp[i][j][isTrue]!=-1) return dp[i][j][isTrue];
+      if(i==j){
+          if(isTrue){
+              return s[i] == 'T';
+          }
+          else{
+              return s[i] == 'F';
+          }
+      }
+      for(int k=i+1;k<=j-1;k += 2){
+          int lt = solve(s,i,k-1,1,dp);
+          int lf = solve(s,i,k-1,0,dp);
+          int rt = solve(s,k+1,j,1,dp);
+          int rf = solve(s,k+1,j,0,dp);
+          if(s[k]=='&'){
+              if(isTrue)
+              ways += (lt*rt);
+              else
+              ways += (lf*rf)+(rt*lf)+(rf*lt);
+          }
+          else if(s[k] == '|'){
+              if(isTrue)
+              ways += (lt*rt)+(rt*lf)+(rf*lt);
+              else
+              ways += (lf*rf);
+          }
+          else{
+              if(isTrue)
+              ways += (rt*lf)+(rf*lt);
+              else
+              ways += (rf*lf)+(rt*lt);
+          }
+      }
+      
+      return dp[i][j][isTrue] = ways;
+  }
+  
+    int countWays(string &s) {
+        
+        int n = s.size();
+        bool isTrue = 1;
+        vector<vector<vector<int>>> dp(n + 1, vector<vector<int>>(n + 1, vector<int>(n + 1, -1)));
+        
+        return solve(s,0,n-1,isTrue,dp);
+    }
+};
